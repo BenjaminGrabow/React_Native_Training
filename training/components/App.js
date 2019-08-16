@@ -1,19 +1,86 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, Text, TextInput, View, Button } from "react-native";
+import { connect } from 'react-redux';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>YEAAAAAAAAH</Text>
-    </View>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    };
+    this.onPressIncrement = this.onPressIncrement.bind(this);
+    this.onPressDecrement = this.onPressDecrement.bind(this);
+    this.onPressClear = this.onPressClear.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
+  }
+
+  onPressIncrement() {
+    this.setState({ count: this.state.count + 1 });
+  }
+
+  onPressDecrement() {
+    this.setState({ count: this.state.count - 1 });
+  }
+
+  onPressClear() {
+    this.setState({ count: 0 });
+  }
+
+  onChangeText(number) {
+    const count = parseInt(number);
+    this.setState({count});
+  }
+
+  render() {
+    const { container, countViewStyle, welcome } = styles;
+    return (
+      <View style={container}>
+          <TextInput          
+            style={{width: 40, height: 40, borderWidth: 1}}
+            onChangeText={this.onChangeText}
+            value={this.state.count.toString()}
+           />
+        <View style={countViewStyle}> 
+          <Button onPress={this.onPressIncrement} title="+" />
+          <Text style={welcome}>
+            {this.props.count}
+          </Text>
+          <Button onPress={this.onPressDecrement} title="-" />
+        </View>
+        <Button onPress={this.onPressClear} title="Clear" />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5FCFF"
   },
+  welcome: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10
+  },
+  instructions: {
+    textAlign: "center",
+    color: "#333333",
+    marginBottom: 5
+  },
+  countViewStyle: {
+    width: '100%',
+    justifyContent: "space-around",
+    flexDirection: "row"
+  }
 });
+
+const mapStateToProps = state => {
+  return {
+    count: state
+  }
+};
+
+export default connect(mapStateToProps, null)(App);
