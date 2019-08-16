@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, TextInput, View, Button } from "react-native";
 import { connect } from 'react-redux';
+import { counterIncrement, counterDecrement } from './Store/actions/counterActions';
 
 class App extends Component {
   constructor(props) {
@@ -41,11 +42,11 @@ class App extends Component {
             value={this.state.count.toString()}
            />
         <View style={countViewStyle}> 
-          <Button onPress={this.onPressIncrement} title="+" />
+          <Button onPress={this.props.counterIncrement} title="+" />
           <Text style={welcome}>
             {this.props.count}
           </Text>
-          <Button onPress={this.onPressDecrement} title="-" />
+          <Button onPress={this.props.counterDecrement} title="-" />
         </View>
         <Button onPress={this.onPressClear} title="Clear" />
       </View>
@@ -83,4 +84,4 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps, { counterIncrement, counterDecrement })(App);
